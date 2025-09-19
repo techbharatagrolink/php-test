@@ -5,6 +5,11 @@ on:
     branches:
       - main
 
+# VERY IMPORTANT: Add this permissions block
+permissions:
+  contents: read
+  packages: write
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -17,14 +22,15 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          password: ${{ secrets.GITHUB_TOKEN }} # This token is automatically generated with the right permissions
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v4
         with:
           context: .
           push: true
-          tags: ghcr.io/${{ github.repository_owner }}/php-app:latest # IMPORTANT: Pushing to GHCR
+          # This creates a tag like ghcr.io/techbharatagrolink/php-test:latest
+          tags: ghcr.io/${{ github.repository }}:latest
 
       - name: Deploy to VPS
         uses: appleboy/ssh-action@master
