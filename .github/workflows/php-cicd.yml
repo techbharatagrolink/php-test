@@ -40,7 +40,7 @@ jobs:
           key: ${{ secrets.VPS_SSH_KEY }}
           script: |
             echo ${{ secrets.GHCR_TOKEN }} | docker login ghcr.io -u ${{ github.repository_owner }} --password-stdin
-            cd /opt/my_stack
+            cd /home/ubuntu/new_system
             docker-compose pull php-app
             docker-compose up -d --no-deps php-app
             echo "Deployment successful!"
